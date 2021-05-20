@@ -1,6 +1,12 @@
 from flask import Flask
 import configs
 
+def redirect_http_https():
+    if request.is_secure:
+        return
+    url = request.url.replace("http://", "https://", 1)
+    return redirect(url, 301)
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(configs)
@@ -10,6 +16,7 @@ def create_app():
         from application.models import database
         app.register_blueprint(index.bp)
         app.register_blueprint(users.bp)
+        app.before_request(redirect_http_https)
 
         database.init_app(app)
     
