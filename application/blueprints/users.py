@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, current_app, request, redirect, session
 from application.models.database import get_db
-import os, hashlib, struct
+import hashlib
+from secrets import token_urlsafe
 
 bp = Blueprint("users", __name__, url_prefix="/users")
 
@@ -14,9 +15,7 @@ def hash_pass(password, salt=None):
     return hashed_pass, salt
 
 def generate_key():
-    randomnum = os.urandom(32)
-    randomnum = struct.unpack("i", randomnum)
-    return randomnum
+    return secrets.token_urlsafe(32)
 
 @bp.route("/", methods=("GET",))
 def profile():
