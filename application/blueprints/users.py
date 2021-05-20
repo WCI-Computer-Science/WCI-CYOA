@@ -12,7 +12,7 @@ def hash_pass(password, salt=None):
     password.encode('utf-8'),
     salt,
     100000)
-    return hashed_pass, salt
+    return str(hashed_pass), str(salt)
 
 def generate_key():
     return token_urlsafe(32)
