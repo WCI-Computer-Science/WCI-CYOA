@@ -52,7 +52,7 @@ def confirmsignup():
         password, salt = hash_pass(str(request.form["password"]))
         cur.execute(
             "INSERT INTO users (username, password_hash, password_salt, key) VALUES (%s, %s, %s)",
-            (str(request.form["username"]), password, salt, key)
+            (str(request.form["username"]), password, salt, key,)
         )
     
     db.commit()
