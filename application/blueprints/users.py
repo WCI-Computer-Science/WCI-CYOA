@@ -14,7 +14,7 @@ def hash_pass(password, salt=None):
     return hashed_pass, salt
 
 def generate_key():
-    return "".join(map(ord, os.urandom(32)))
+    return "".join(map(lambda a: ord(a) if str(a)==a else a, os.urandom(32)))
 
 @bp.route("/", methods=("GET",))
 def profile():
