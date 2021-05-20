@@ -24,7 +24,7 @@ def profile():
 
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT username FROM users WHERE key=%s LIMIT 1", (session["key"]))
+        cur.execute("SELECT username FROM users WHERE key=%s LIMIT 1", (session["key"]),)
         res = cur.fetchone()
     if res==None:
         session.clear()
@@ -43,7 +43,7 @@ def confirmsignup():
         return redirect("/users")
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT * FROM users WHERE username=%s LIMIT 1", (str(request.form["username"])))
+        cur.execute("SELECT * FROM users WHERE username=%s LIMIT 1", (str(request.form["username"])),)
         res = cur.fetchone()
         if res:
             flash("Account already exists")
@@ -100,7 +100,7 @@ def click():
     with db.cursor() as cur:
         cur.execute(
             "UPDATE users SET clicks=clicks+1 WHERE email=%s",
-            (str(session["email"]))
+            (str(session["email"]),)
         )
     db.commit()
     return "Success"
