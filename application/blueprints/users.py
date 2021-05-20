@@ -48,10 +48,11 @@ def confirmsignup():
         if res:
             flash("Account already exists")
             return redirect("/users/signup")
-        key = generate_key()
+        key = str(generate_key())
+        password, salt = hash_pass(str(request.form["password"]))
         cur.execute(
             "INSERT INTO users (username, password_hash, password_salt, key) VALUES (%s, %s, %s)",
-            (str(request.form["username"]),) + hash_pass(str(request.form["password"])) + (key,)
+            (str(request.form["username"]), password, salt, key)
         )
     
     db.commit()
