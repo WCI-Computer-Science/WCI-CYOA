@@ -18,24 +18,27 @@ def generate_key():
 
 @bp.route("/", methods=("GET",))
 def profile():
-    if "email" not in session:
+    if "key" not in session:
         return redirect("/users/login")
 
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT username, clicks FROM users WHERE email=%s LIMIT 1", (session["email"]))
+        cur.execute("SELECT username FROM users WHERE key=%s LIMIT 1", (session["key"]))
         res = cur.fetchone()
-    return render_template("users.html", username=res[0], clicks=res[1])
+    if res==None:
+        session.clear()
+        return redirect("/users/login")
+    return render_template("users.html", username=res[0])
 
 @bp.route("/signup", methods=("GET",))
 def signup():
-    if "email" in session:
+    if "key" in session:
         return redirect("/users")
     return render_template("login.html", title="Sign up", action="confirmsignup", display="none")
 
 @bp.route("/confirmsignup", methods=("POST",))
 def confirmsignup():
-    if "email" in session:
+    if "key" in session:
         return redirect("/users")
     db = get_db()
     with db.cursor() as cur:
@@ -46,8 +49,8 @@ def confirmsignup():
             return redirect("/users/signup")
         key = generate_key()
         cur.execute(
-            "INSERT INTO users (username, password_hash, password_salt) VALUES (%s, %s, %s)",
-            (str(request.form["username"]),) + hash_pass(str(request.form["password"]))
+            "INSERT INTO users (username, password_hash, password_salt, key) VALUES (%s, %s, %s)",
+            (str(request.form["username"]),) + hash_pass(str(request.form["password"])) + (key,)
         )
     
     db.commit()
@@ -56,7 +59,7 @@ def confirmsignup():
 
 @bp.route("/login", methods=("GET",))
 def login():
-    if "email" in session:
+    if "key" in session:
         return redirect("/users")
     return render_template("login.html", title="Login", action="confirmlogin")
 
@@ -67,20 +70,23 @@ def logout():
 
 @bp.route("/confirmlogin", methods=("POST",))
 def confirmlogin():
-    if "email" in session:
+    if "key" in session:
         return redirect("/users")
     db = get_db()
     with db.cursor() as cur:
         cur.execute(
-            "SELECT * FROM users WHERE email=%s AND password=%s",
-            (str(request.form["email"]), str(request.form["password"]))
+            "SELECT password_hash, password_salt, key FROM users WHERE username=%s",
+            (str(request.form["username"]),)
         )
         res = cur.fetchone()
-        if not res:
-            flash("Either account doesn't exist or incorrect password")
+        if res == None:
+            flash("That account doesn't exist!")
             return redirect("/users/login")
-    
-    session["email"] = request.form["email"]
+        if hash_pass(request["password"], salt=res[1]) != res[0]:
+            flash("Incorrect password!")
+            return redirect("/users/login")
+
+    session["key"] = key
     return redirect("/users")
 
 # API endpoint
