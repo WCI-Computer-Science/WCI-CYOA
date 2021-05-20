@@ -6,7 +6,7 @@ bp = Blueprint("users", __name__, url_prefix="/users")
 
 def hash_pass(password, salt=None):
     salt = os.urandom(32) if salt == None else salt
-    hashed_passs = hashlib.pbkdf2_hmac(
+    hashed_pass = hashlib.pbkdf2_hmac(
     'sha256',
     password.encode('utf-8'),
     salt,
