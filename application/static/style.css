@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font: 25px 'Montserrat', sans-serif;
+}
+  
+nav {
+  width: 100%;
+  height: 80px;
+  background-color: black;
+  vertical-align: text-bottom;
+}
+
+nav ul {
+  margin: auto;
+  padding: 25px
+}
+
+nav li {
+  width: 150px;
+  float: right;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+}
+
+nav a:hover {
+  color: aqua;
+}
+
+#content {
+  padding: 0 20px;
+}
