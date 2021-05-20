@@ -13,6 +13,8 @@ def hash_pass(password, salt=None):
     100000)
     return hashed_pass, salt
 
+def generate_key():
+    return "".join(map(ord, os.urandom(32)))
 
 @bp.route("/", methods=("GET",))
 def profile():
@@ -42,12 +44,14 @@ def confirmsignup():
         if res:
             flash("Account already exists")
             return redirect("/users/signup")
+        key = generate_key()
         cur.execute(
             "INSERT INTO users (username, password_hash, password_salt) VALUES (%s, %s, %s)",
             (str(request.form["username"]),) + hash_pass(str(request.form["password"]))
         )
     
     db.commit()
+    session["key"] = key
     return redirect("/users")
 
 @bp.route("/login", methods=("GET",))
