@@ -1,7 +1,18 @@
 from flask import Blueprint, render_template, flash, current_app, request, redirect, session
 from application.models.database import get_db
+import os, hashlib
 
 bp = Blueprint("users", __name__, url_prefix="/users")
+
+def hash_pass(password, salt=None):
+    salt = os.urandom(32) if salt == None else salt
+    hashed_passs = hashlib.pbkdf2_hmac(
+    'sha256',
+    password.encode('utf-8'),
+    salt,
+    100000)
+    return hashed_pass, salt
+
 
 @bp.route("/", methods=("GET",))
 def profile():
@@ -10,7 +21,7 @@ def profile():
 
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT username, clicks FROM test_users WHERE email=%s LIMIT 1", (session["email"]))
+        cur.execute("SELECT username, clicks FROM users WHERE email=%s LIMIT 1", (session["email"]))
         res = cur.fetchone()
     return render_template("users.html", username=res[0], clicks=res[1])
 
@@ -26,14 +37,14 @@ def confirmsignup():
         return redirect("/users")
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT * FROM test_users WHERE email=%s LIMIT 1", (str(request.form["email"])))
+        cur.execute("SELECT * FROM users WHERE username=%s LIMIT 1", (str(request.form["username"])))
         res = cur.fetchone()
         if res:
             flash("Account already exists")
             return redirect("/users/signup")
         cur.execute(
-            "INSERT INTO test_users (email, username, password) VALUES (%s, %s, %s)",
-            (str(request.form["email"]), str(request.form["name"]), str(request.form["password"]))
+            "INSERT INTO users (username, password_hash, password_salt) VALUES (%s, %s, %s)",
+            (str(request.form["username"]),) + hash_pass(str(request.form["password"]))
         )
     
     db.commit()
@@ -58,7 +69,7 @@ def confirmlogin():
     db = get_db()
     with db.cursor() as cur:
         cur.execute(
-            "SELECT * FROM test_users WHERE email=%s AND password=%s",
+            "SELECT * FROM users WHERE email=%s AND password=%s",
             (str(request.form["email"]), str(request.form["password"]))
         )
         res = cur.fetchone()
@@ -77,7 +88,7 @@ def click():
     db = get_db()
     with db.cursor() as cur:
         cur.execute(
-            "UPDATE test_users SET clicks=clicks+1 WHERE email=%s",
+            "UPDATE users SET clicks=clicks+1 WHERE email=%s",
             (str(session["email"]))
         )
     db.commit()

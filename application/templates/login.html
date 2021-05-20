@@ -6,12 +6,8 @@
 {% endfor %}
 <form action="/users/{{action}}" method="POST">
     <div>
-        <label for="email">Email: </label>
-        <input type="text" name="email" required="required"/>
-    </div>
-    <div>
-        <label for="name">Name: </label>
-        <input type="text" name="name" required="required"/>
+        <label for="name">Username: </label>
+        <input type="text" name="username" required="required"/>
     </div>
     <div>
         <label for="password">Password: </label>
