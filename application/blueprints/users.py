@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, current_app, request, redirect, session
 from application.models.database import get_db
-import hashlib
+import hashlib, os
 from secrets import token_urlsafe
 
 bp = Blueprint("users", __name__, url_prefix="/users")
