@@ -15,7 +15,7 @@ def hash_pass(password, salt=None):
     return hashed_pass, salt
 
 def generate_key():
-    return secrets.token_urlsafe(32)
+    return token_urlsafe(32)
 
 @bp.route("/", methods=("GET",))
 def profile():
