@@ -6,7 +6,6 @@ def get_db():
     if "db" not in g:
         g.db = psycopg2.connect(
             current_app.config["DATABASE_URL"],
-            host="/tmp/",
             sslmode="require",
             cursor_factory=psycopg2.extras.DictCursor,
         )
