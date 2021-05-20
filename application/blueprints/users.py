@@ -24,7 +24,7 @@ def profile():
 
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT username FROM users WHERE key=%s LIMIT 1", (session["key"]),)
+        cur.execute("SELECT username FROM users WHERE key=%s LIMIT 1", (str(session["key"]),))
         res = cur.fetchone()
     if res==None:
         session.clear()
