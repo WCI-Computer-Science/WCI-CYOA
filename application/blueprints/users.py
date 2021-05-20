@@ -48,7 +48,6 @@ def confirmsignup():
         )
     
     db.commit()
-    session["email"] = request.form["email"]
     return redirect("/users")
 
 @bp.route("/login", methods=("GET",))
