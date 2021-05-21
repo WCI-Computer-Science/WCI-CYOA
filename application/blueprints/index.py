@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, current_app, redirect, abort, session, request
 from application.models.database import get_db
-from random import randint
+from random import randint, shuffle
 
 bp = Blueprint("index", __name__, url_prefix="/")
 
@@ -32,7 +32,7 @@ def make_game(length=None):
     with db.cursor() as cur:
         pages = list(map(lambda a: hash(str(a)), range(length)))
         orderedpages = list(pages)
-        random.shuffle(pages)
+        shuffle(pages)
         for i in range(1, goallength+1):
             cur.execute(
                 "INSERT INTO protected_pages (pagenumber, pagehash, final) VALUES (%s, %s, %s)",
