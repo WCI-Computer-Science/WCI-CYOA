@@ -2,8 +2,8 @@
 {% block body %}
 <h1>{{name}}</h1>
 <ul>
-    {% if targets[0] != None %}<li>{{targets[0]}}</li>{%endif%}
-    {% if targets[1] != None %}<li>{{targets[1]}}</li>{%endif%}
-    {% if targets[2] != None %}<li>{{targets[2]}}</li>{%endif%}
+    {% if targets[0] != None %}<li><a href="/game/{{targets[0]}}">{{targets[0]}}</a></li>{%endif%}
+    {% if targets[1] != None %}<li><a href="/game/{{targets[1]}}">{{targets[1]}}</a></li>{%endif%}
+    {% if targets[2] != None %}<li><a href="/game/{{targets[2]}}">{{targets[2]}}</a></li>{%endif%}
 </ul>
 {% endblock %}
