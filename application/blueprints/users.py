@@ -93,7 +93,7 @@ def confirmlogin():
             print(type(hashed_pass), type(res[0]))
             flash("Incorrect password!")
             return redirect("/users/login")
-
+        key = res[2]
     session["key"] = key
     return redirect("/users")
 
