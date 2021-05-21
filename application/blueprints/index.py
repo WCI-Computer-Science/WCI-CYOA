@@ -146,7 +146,7 @@ def game(pageid):
 
 @bp.route("/jointeam/<team>")
 def jointeam(team):
-    if int(team) not in ["1", "2"]:
+    if int(team) not in [1, 2]:
         abort(401)
     if "key" in session:
         key = session["key"]
