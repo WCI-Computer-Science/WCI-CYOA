@@ -49,7 +49,7 @@ def make_game(length=None):
         for i in pages:
             targets = randint(1,3)
             cur.execute(
-                "INSERT INTO pages (gamepagenumber, pagehash, target1, target2, taget3) VALUES (%s, %s, %s, %s, %s)",
+                "INSERT INTO pages (gamepagenumber, pagehash, target1, target2, target3) VALUES (%s, %s, %s, %s, %s)",
                 (
                     i,
                     hash(str(hash(str(i)))),
