@@ -47,11 +47,17 @@ def visitedpage(pagehash, key):
         if res[0]==None:
             return
         team = int(res[0])
-        if team in [1,2]:
+        if team == 1:
             cur.execute(
                 "UPDATE pages SET team1visited=TRUE WHERE pagehash=%s",
                 (pagehash,)
             )
+        elif team == 2:
+            cur.execute(
+                "UPDATE pages SET team2visited=TRUE WHERE pagehash=%s",
+                (pagehash,)
+            )
+    db.commit()
         
 
 def get_page_targets(pagehash):
@@ -163,6 +169,7 @@ def jointeam(team):
             "UPDATE users SET team=%s WHERE key=%s",
             (str(team), key)
         )
+    db.commit()
     return "Welcome to team %s!" % team
     
 
