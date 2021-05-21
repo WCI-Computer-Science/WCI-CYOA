@@ -53,9 +53,9 @@ def make_game(length=None):
                 (
                     i,
                     hash(str(hash(str(i)))),
-                    choice(targetpages),
-                    choice(targetpages) if targets>1 else None,
-                    choice(targetpages) if targets>2 else None
+                    hash(str(hash(str(choice(targetpages))))),
+                    hash(str(hash(str(choice(targetpages))))) if targets>1 else None,
+                    hash(str(hash(str(choice(targetpages)))))q if targets>2 else None
                 )
             )
     db.commit()
