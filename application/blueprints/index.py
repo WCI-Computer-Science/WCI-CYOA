@@ -26,8 +26,8 @@ def get_team(key):
         return int(res[0]) if res!=None else 3
 
 def make_game(length=None):
-    length = 9000 if length==None else int(length)
-    goallength = randint(int(length/40), int(length/18))
+    length = 900 if length==None else int(length)
+    goallength = randint(int(length/10), int(length/2))
     db = get_db()
     with db.cursor() as cur:
         cur.execute(
@@ -42,9 +42,18 @@ def make_game(length=None):
         targetpages = list(pages)
         for i in range(1, goallength+1):
             gamepagenumber = protectedpages[i-1]
+            targets = randint(1,3)
             cur.execute(
                 "INSERT INTO protected_pages (pagenumber, pagehash, final, gamepagenumber) VALUES (%s, %s, %s, %s)",
                 (i, hash(str(hash(str(gamepagenumber)))), i==goallength, gamepagenumber)
+            )
+            cur.execute(
+                "INSERT INTO pages (gamepagenumber, pagehash, target1, target2, target3) VALUES (%s, %s, %s, %s, %s)",
+                gamepagenumber,
+                hash(str(hash(str(gamepagenumber)))),
+                hash(str(hash(str(protectedpages[i])))) if i!=goallength else None,
+                hash(str(hash(str(choice(targetpages))))) if targets>1 and i!=goallength else None,
+                hash(str(hash(str(choice(targetpages))))) if targets>2 and i!=goallength else None
             )
         for i in pages:
             targets = randint(1,3)
