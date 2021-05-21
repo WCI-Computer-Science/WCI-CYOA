@@ -152,12 +152,16 @@ def jointeam(team):
         key = session["key"]
     else:
         abort(403)
+    onteam = get_team(key)
+    if onteam!=3:
+        return "You're already on team %s!" % onteam
     db = get_db()
     with db.cursor() as cur:
         cur.execute(
             "UPDATE users SET team=%s WHERE key=%s",
             (str(team), key)
         )
+    return "Welcome to team %s!" % team
     
 
 @bp.route("/gamesetup/makegame")
