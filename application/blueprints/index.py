@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, current_app, redirect, abort, session, request
 from application.models.database import get_db
-from random import randint, shuffle
+from random import randint, shuffle, choice
 
 bp = Blueprint("index", __name__, url_prefix="/")
 
@@ -33,14 +33,30 @@ def make_game(length=None):
         cur.execute(
             "DELETE FROM protected_pages"
         )
+        cur.execute(
+            "DELETE FROM pages"
+        )
         pages = list(range(length))
-        orderedpages = list(range(length))
+        targetpages = list(range(length))
         shuffle(pages)
         for i in range(1, goallength+1):
             gamepagenumber = pages.pop()
             cur.execute(
                 "INSERT INTO protected_pages (pagenumber, pagehash, final, gamepagenumber) VALUES (%s, %s, %s, %s)",
-                (i, hash(hash(str(gamepagenumber))), i==goallength, gamepagenumber)
+                (i, hash(str(hash(str(gamepagenumber)))), i==goallength, gamepagenumber)
+            )
+            targetpages.remove(gamepagenumber)
+        for i in pages:
+            targets = randint(1,3)
+            cur.execute(
+                "INSERT INTO pages (gamepagenumber, pagehash, target1, target2, taget3) VALUES (%s, %s, %s, %s, %s)",
+                (
+                    i,
+                    hash(str(hash(str(i)))),
+                    choice(targetpages),
+                    choice(targetpages) if targets>1 else None,
+                    choice(targetpages) if targets>2 else None
+                )
             )
     db.commit()
 
