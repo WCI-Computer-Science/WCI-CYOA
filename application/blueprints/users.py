@@ -31,10 +31,10 @@ def generate_key():
 def profile():
     if "key" not in session:
         return redirect("/users/login")
-
+    key = session["key"]
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT username, key FROM users WHERE key=%s LIMIT 1", (str(session["key"]),))
+        cur.execute("SELECT username, key FROM users WHERE key=%s LIMIT 1", (str(key),))
         res = cur.fetchone()
     if res==None:
         session.clear()
