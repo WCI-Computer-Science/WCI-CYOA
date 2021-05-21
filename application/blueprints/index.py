@@ -148,6 +148,16 @@ def game(pageid):
 def jointeam(team):
     if int(team) not in ["1", "2"]:
         abort(401)
+    if "key" in session:
+        key = session["key"]
+    else:
+        abort(403)
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "UPDATE users SET team=%s WHERE key=%s",
+            (str(team), key)
+        )
     
 
 @bp.route("/gamesetup/makegame")
