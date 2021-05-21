@@ -51,7 +51,7 @@ def get_win(pagehash):
             (pagehash,)
         )
         res = cur.fetchone()
-        return False if res=None else res[0]
+        return False if res==None else res[0]
 
 def make_game(length=None):
     length = 1000 if length==None else int(length)
