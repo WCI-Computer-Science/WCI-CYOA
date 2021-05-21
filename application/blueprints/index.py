@@ -142,6 +142,7 @@ def game(pageid):
         key = session["key"]
     elif request.args.get("key", None)!=None:
         key = request.args.get("key")
+    else: abort(401)
     visitedpage(pageid, key)
 
     pagetargets = get_page_targets(pageid)

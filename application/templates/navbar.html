@@ -1,7 +1,7 @@
 <nav>
     <ul>
         {% if "key" in session %}<li class="navright"><a href="/users/logout">Log out</a></li>{% endif %}
-        <li class="navright"><a href="/users">Account</a></li>
+        {% if "key" in session %}<li class="navright"><a href="/users">Account</a></li>{% else %}<li class="navright"><a href="/users">Log in</a></li>{% endif %}
         <li class="navleft"><a href="/">Home</a></li>
     </ul>
 </nav>
