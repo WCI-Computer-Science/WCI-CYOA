@@ -10,7 +10,6 @@ def get_start_page():
             "SELECT pagehash FROM protected_pages WHERE pagenumber=1 LIMIT 1"
         )
         res = cur.fetchone()
-        print(res)
         if res == None:
             return 0
     return res[0]
@@ -21,7 +20,7 @@ def home():
 
 @bp.route("/game/<pageid>")
 def game(pageid):
-    if pageid.lower=="start":
+    if pageid.lower()=="start":
         pageid = get_start_page()
         if pageid == 0:
             abort(403)
