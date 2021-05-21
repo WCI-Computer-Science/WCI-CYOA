@@ -27,12 +27,12 @@ def profile():
 
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT username FROM users WHERE key=%s LIMIT 1", (str(session["key"]),))
+        cur.execute("SELECT username, key FROM users WHERE key=%s LIMIT 1", (str(session["key"]),))
         res = cur.fetchone()
     if res==None:
         session.clear()
         return redirect("/users/login")
-    return render_template("users.html", username=res[0])
+    return render_template("users.html", username=res[0], key=res[1])
 
 @bp.route("/signup", methods=("GET",))
 def signup():

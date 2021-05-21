@@ -2,14 +2,5 @@
 {% block body %}
 <h1>User page</h1>
 <h2>Welcome back, {{username}}</h2>
-<button id="clickbutton">Click</button>
-<p><a href="/users/logout">Log out</a></p>
-<script>
-    async function click() {
-        await fetch('/users/click');
-        window.location.reload();
-    }
-
-    document.getElementById("clickbutton").addEventListener("click", click);
-</script>
+<h4>You key is: <code>{{key}}</code></h4>
 {% endblock %}
