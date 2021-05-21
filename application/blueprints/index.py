@@ -37,15 +37,15 @@ def make_game(length=None):
             "DELETE FROM pages"
         )
         pages = list(range(length))
-        targetpages = list(range(length))
         shuffle(pages)
+        protectedpages = [pages.pop() for i in range(goallength)]
+        targetpages = list(pages)
         for i in range(1, goallength+1):
-            gamepagenumber = pages.pop()
+            gamepagenumber = protectedpages[i-1]
             cur.execute(
                 "INSERT INTO protected_pages (pagenumber, pagehash, final, gamepagenumber) VALUES (%s, %s, %s, %s)",
                 (i, hash(str(hash(str(gamepagenumber)))), i==goallength, gamepagenumber)
             )
-            targetpages.remove(gamepagenumber)
         for i in pages:
             targets = randint(1,3)
             cur.execute(
