@@ -30,6 +30,9 @@ def make_game(length=None):
     goallength = randint(int(length/40), int(length/18))
     db = get_db()
     with db.cursor() as cur:
+        cur.execute(
+            "DELETE FROM protected_pages"
+        )
         pages = list(range(length))
         orderedpages = list(range(length))
         shuffle(pages)
@@ -37,7 +40,7 @@ def make_game(length=None):
             gamepagenumber = pages.pop()
             cur.execute(
                 "INSERT INTO protected_pages (pagenumber, pagehash, final, gamepagenumber) VALUES (%s, %s, %s, %s)",
-                (i, hash(str(gamepagenumber)), i==goallength, gamepagenumber)
+                (i, hash(hash(str(gamepagenumber))), i==goallength, gamepagenumber)
             )
     db.commit()
 
