@@ -6,7 +6,7 @@ from secrets import token_urlsafe
 bp = Blueprint("users", __name__, url_prefix="/users")
 
 def hash_pass(password, salt=None):
-    salt = bytearray(str(os.urandom(32)), "utf-8") if salt == None else bytearray(salt, "utf-8")
+    salt = bytearray(str(os.urandom(32)), "utf-8") if salt == None else salt
     hashed_pass = hashlib.pbkdf2_hmac(
     'sha256',
     password.encode('utf-8'),
