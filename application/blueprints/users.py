@@ -87,7 +87,10 @@ def confirmlogin():
         if res == None:
             flash("That account doesn't exist!")
             return redirect("/users/login")
-        if hash_pass(request.form["password"], salt=res[1]) != res[0]:
+        hashed_pass = hash_pass(request.form["password"], salt=res[1])
+        if  hashed_pass != res[0]:
+            print(hashed_pass, res[0])
+            print(type(hashed_pass), type(res[0]))
             flash("Incorrect password!")
             return redirect("/users/login")
 
