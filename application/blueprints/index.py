@@ -23,7 +23,7 @@ def get_team(key):
             (str(key),)
         )
         res = cur.fetchone()
-        return int(res[0]) if res!=None else 3
+        return (int(res[0]) if res[0]!= None else 4) if res!=None else 3
 
 def page_exists(pagehash):
     db = get_db()
@@ -153,7 +153,9 @@ def jointeam(team):
     else:
         abort(403)
     onteam = get_team(key)
-    if onteam!=3:
+    if onteam==3:
+        abort(403)
+    if onteam!=4:
         return "You're already on team %s!" % onteam
     db = get_db()
     with db.cursor() as cur:
