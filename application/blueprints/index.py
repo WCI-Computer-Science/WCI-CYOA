@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, current_app, redirect, abort
 from application.models.database import get_db
+from random import randint
 
 bp = Blueprint("index", __name__, url_prefix="/")
 
@@ -24,6 +25,21 @@ def get_team(key):
         res = cur.fetchone()
         return int(res[0]) if res!=None else 3
 
+def make_game(length=None):
+    length = 9000 if length==None else int(length)
+    goallength = randint(int(length/40), int(length/18))
+    db = get_db()
+    with db.cursor() as cur:
+        pages = list(map(lambda a: hash(str(a)), range(length)))
+        orderedpages = list(pages)
+        random.shuffle(pages)
+        for i in range(1, goallength+1):
+            cur.execute(
+                "INSERT INTO protected_pages (pagenumber, pagehash, final) VALUES (%s, %s, %s)",
+                (i, pages.pop(), i==goallength)
+            )
+    db.commit()
+
 @bp.route("/")
 def home():
     return render_template("index.html")
@@ -42,5 +58,5 @@ def generate_game():
     team = get_team(session["key"])
     if team!=0:
         abort(401)
-    abort(501)
+    make_game(length=request.args.get("length", None))
     
