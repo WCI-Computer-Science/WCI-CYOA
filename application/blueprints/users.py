@@ -71,7 +71,7 @@ def login():
 @bp.route("/logout", methods=("GET",))
 def logout():
     session.clear()
-    return redirect("/")
+    return redirect("/users")
 
 @bp.route("/confirmlogin", methods=("POST",))
 def confirmlogin():
