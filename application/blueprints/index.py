@@ -90,7 +90,7 @@ def game(pageid):
         pageid = get_start_page()
         if pageid == 0:
             abort(403)
-        return redirect("/game/" + pageid)
+        return redirect("/game/" + str(pageid))
     if not(page_exists(pageid)):
         abort(404)
     return render_template("gamepage.html", name=pageid)
