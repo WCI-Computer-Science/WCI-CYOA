@@ -7,9 +7,10 @@ def get_start_page():
     db = get_db()
     with db.cursor() as cur:
         cur.execute(
-            "SELECT pagehash FROM protected_pages WHERE pagenumber=1"
+            "SELECT pagehash FROM protected_pages WHERE pagenumber=1 LIMIT 1"
         )
         res = cur.fetchone()
+        print(res)
         if res == None:
             return 0
     return res[0]
