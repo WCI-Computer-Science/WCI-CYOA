@@ -14,6 +14,16 @@ def get_start_page():
             return 0
     return res[0]
 
+def get_team(key):
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT team FROM users WHERE key=%s LIMIT 1",
+            (str(key),)
+        )
+        res = cur.fetchone()
+        return int(res[0]) if res!=None else 3
+
 @bp.route("/")
 def home():
     return render_template("index.html")
@@ -25,4 +35,12 @@ def game(pageid):
         if pageid == 0:
             abort(403)
         return redirect("/game/" + pageid)
-    return render_template("gamepage.html", param=pageid)
+    return render_template("gamepage.html", name=pageid)
+
+@bp.route("/gamesetup/makegame")
+def generate_game():
+    team = get_team(session["key"])
+    if team!=0:
+        abort(401)
+    abort(501)
+    
