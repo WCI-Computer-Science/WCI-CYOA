@@ -49,11 +49,13 @@ def make_game(length=None):
             )
             cur.execute(
                 "INSERT INTO pages (gamepagenumber, pagehash, target1, target2, target3) VALUES (%s, %s, %s, %s, %s)",
-                gamepagenumber,
-                hash(str(hash(str(gamepagenumber)))),
-                hash(str(hash(str(protectedpages[i])))) if i!=goallength else None,
-                hash(str(hash(str(choice(targetpages))))) if targets>1 and i!=goallength else None,
-                hash(str(hash(str(choice(targetpages))))) if targets>2 and i!=goallength else None
+                (
+                    gamepagenumber,
+                    hash(str(hash(str(gamepagenumber)))),
+                    hash(str(hash(str(protectedpages[i])))) if i!=goallength else None,
+                    hash(str(hash(str(choice(targetpages))))) if targets>1 and i!=goallength else None,
+                    hash(str(hash(str(choice(targetpages))))) if targets>2 and i!=goallength else None
+                )
             )
         for i in pages:
             targets = randint(1,3)
