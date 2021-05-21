@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, redirect, abort
+from flask import Blueprint, render_template, current_app, redirect, abort, session
 from application.models.database import get_db
 from random import randint
 
