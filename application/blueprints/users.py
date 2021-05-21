@@ -6,15 +6,12 @@ from secrets import token_urlsafe
 bp = Blueprint("users", __name__, url_prefix="/users")
 
 def hash_pass(password, salt=None):
-    print(salt)
     salt = os.urandom(32) if salt == None else bytes.fromhex(salt)
-    print(salt)
     hashed_pass = hashlib.pbkdf2_hmac(
     'sha256',
     password.encode('utf-8'),
     salt,
     100000)
-    print(hashed_pass.hex())
     return hashed_pass.hex(), salt.hex()
 
 def generate_key():
@@ -89,8 +86,6 @@ def confirmlogin():
             return redirect("/users/login")
         hashed_pass, salt = hash_pass(request.form["password"], salt=res[1])
         if  hashed_pass != res[0]:
-            print(hashed_pass, res[0])
-            print(type(hashed_pass), type(res[0]))
             flash("Incorrect password!")
             return redirect("/users/login")
         key = res[2]
