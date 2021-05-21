@@ -25,8 +25,17 @@ def get_team(key):
         res = cur.fetchone()
         return int(res[0]) if res!=None else 3
 
+def page_exists(pagehash):
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT pagehash FROM pages WHERE pagehash=%s LIMIT 1",
+            (pagehash,)
+        )
+        return cur.fetchone()!=None
+
 def make_game(length=None):
-    length = 900 if length==None else int(length)
+    length = 1000 if length==None else int(length)
     goallength = randint(int(length/10), int(length/2))
     db = get_db()
     with db.cursor() as cur:
@@ -82,6 +91,8 @@ def game(pageid):
         if pageid == 0:
             abort(403)
         return redirect("/game/" + pageid)
+    if not(page_exists(pageid)):
+        abort(404)
     return render_template("gamepage.html", name=pageid)
 
 @bp.route("/gamesetup/makegame")
