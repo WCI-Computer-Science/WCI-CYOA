@@ -34,6 +34,24 @@ def page_exists(pagehash):
         )
         return cur.fetchone()!=None
 
+def visitedpage(pagehash, key):
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT team FROM users WHERE key=%s LIMIT 1",
+            (key,)
+        )
+        res = cur.fetchone()
+        if res==None:
+            return
+        team = int(res[0])
+        if team in [1,2]:
+            cur.execute(
+                "UPDATE pages SET team1visited=TRUE WHERE pagehash=%s",
+                (pagehash,)
+            )
+        
+
 def get_page_targets(pagehash):
     db = get_db()
     with db.cursor() as cur:
@@ -112,6 +130,12 @@ def game(pageid):
         return redirect("/game/" + str(pageid))
     if not(page_exists(pageid)):
         abort(404)
+    if "key" in session:
+        key = session["key"]
+    elif request.args.get("key", None)!=None:
+        key = request.args.get("key")
+    visitedpage(pageid, key)
+
     pagetargets = get_page_targets(pageid)
     shuffle(pagetargets)
     win = get_win(pageid)
