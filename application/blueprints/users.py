@@ -5,6 +5,16 @@ from secrets import token_urlsafe
 
 bp = Blueprint("users", __name__, url_prefix="/users")
 
+def get_team(key):
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT team FROM users WHERE key=%s LIMIT 1",
+            (str(key),)
+        )
+        res = cur.fetchone()
+        return (int(res[0]) if res[0]!= None else 4) if res!=None else 3
+
 def hash_pass(password, salt=None):
     salt = os.urandom(32) if salt == None else bytes.fromhex(salt)
     hashed_pass = hashlib.pbkdf2_hmac(
@@ -29,7 +39,7 @@ def profile():
     if res==None:
         session.clear()
         return redirect("/users/login")
-    return render_template("users.html", username=res[0], key=res[1])
+    return render_template("users.html", username=res[0], key=res[1], team=get_team(key))
 
 @bp.route("/signup", methods=("GET",))
 def signup():
