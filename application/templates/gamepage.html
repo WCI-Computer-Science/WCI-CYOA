@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block title %}
+| {{name}}
+{% endblock %}
 {% block body %}
 <h1>{{name}}</h1>
 {% if not win %}
