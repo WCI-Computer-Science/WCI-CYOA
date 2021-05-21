@@ -59,4 +59,5 @@ def generate_game():
     if team!=0:
         abort(401)
     make_game(length=request.args.get("length", None))
+    return "Success!"
     
