@@ -174,7 +174,7 @@ def game(pageid):
     shuffle(pagetargets)
     win = get_win(pageid)
     if win:
-        done = check_win()
+        done = check_win(get_team(key))
     else:
         done = False
     return render_template("gamepage.html", name=pageid, targets=pagetargets, win=win, done=done)
