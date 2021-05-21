@@ -6,13 +6,13 @@ from secrets import token_urlsafe
 bp = Blueprint("users", __name__, url_prefix="/users")
 
 def hash_pass(password, salt=None):
-    salt = os.urandom(32) if salt == None else salt
+    salt = os.urandom(32) if salt == None else bytes.fromhex(salt)
     hashed_pass = hashlib.pbkdf2_hmac(
     'sha256',
     password.encode('utf-8'),
     salt,
     100000)
-    return hashed_pass.hex, salt.hex
+    return hashed_pass.hex(), salt.hex()
 
 def generate_key():
     return token_urlsafe(32)
