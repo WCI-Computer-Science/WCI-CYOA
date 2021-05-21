@@ -46,7 +46,7 @@ def confirmsignup():
         return redirect("/users")
     db = get_db()
     with db.cursor() as cur:
-        cur.execute("SELECT * FROM users WHERE username=%s LIMIT 1", (str(request.form["username"])),)
+        cur.execute("SELECT * FROM users WHERE username=%s LIMIT 1", (str(request.form["username"]),))
         res = cur.fetchone()
         if res:
             flash("Account already exists")
@@ -96,17 +96,3 @@ def confirmlogin():
         key = res[2]
     session["key"] = key
     return redirect("/users")
-
-# API endpoint
-@bp.route("/click", methods=("GET",))
-def click():
-    if "email" not in session:
-        return "Fail"
-    db = get_db()
-    with db.cursor() as cur:
-        cur.execute(
-            "UPDATE users SET clicks=clicks+1 WHERE email=%s",
-            (str(session["email"]),)
-        )
-    db.commit()
-    return "Success"
