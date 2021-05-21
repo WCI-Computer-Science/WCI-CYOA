@@ -6,7 +6,7 @@
 <h1>User page</h1>
 <h2>Welcome back, {{username}}</h2>
 <h4>You key is: <code>{{key}}</code></h4>
-<p>Your key is used to identify you when you're making requests from outside of the browser. Add a parameter "key" to your request ("?key=<i><code>Your key here</code></i>")</p>
+<p>Your key is used to identify you when you're making requests from outside of the browser. Add a parameter "key" to your request ("<code>?key={{key}}</code>")</p>
 {% if team==4 %}
 <a href="/jointeam/1">Join team 1</a>
 <a href="/jointeam/2">Join team 2</a>
