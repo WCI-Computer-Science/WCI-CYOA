@@ -1,9 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
 <h1>{{name}}</h1>
+{% if not win %}
 <ul>
     {% if targets[0] != None %}<li><a href="/game/{{targets[0]}}">{{targets[0]}}</a></li>{%endif%}
     {% if targets[1] != None %}<li><a href="/game/{{targets[1]}}">{{targets[1]}}</a></li>{%endif%}
     {% if targets[2] != None %}<li><a href="/game/{{targets[2]}}">{{targets[2]}}</a></li>{%endif%}
 </ul>
+{% else %}
+    {% if done %}
+        <h4>You won!</h4>
+    {% else %}
+        <h4>To win, you must find the one path from the <a href="/game/start">start page to the end</a>. Randomly checking pages won't work.</h4>
 {% endblock %}

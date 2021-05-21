@@ -43,6 +43,16 @@ def get_page_targets(pagehash):
         )
         return cur.fetchone()
 
+def get_win(pagehash):
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT final FROM protected_pages WHERE pagehash=%s LIMIT 1",
+            (pagehash,)
+        )
+        res = cur.fetchone()
+        return False if res=None else res[0]
+
 def make_game(length=None):
     length = 1000 if length==None else int(length)
     goallength = randint(int(length/10), int(length/2))
@@ -104,7 +114,9 @@ def game(pageid):
         abort(404)
     pagetargets = get_page_targets(pageid)
     shuffle(pagetargets)
-    return render_template("gamepage.html", name=pageid, targets=pagetargets)
+    win = get_win(pageid)
+    done = False
+    return render_template("gamepage.html", name=pageid, targets=pagetargets, win=win, done=done)
 
 @bp.route("/gamesetup/makegame")
 def generate_game():
