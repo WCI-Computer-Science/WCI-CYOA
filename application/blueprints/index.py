@@ -79,6 +79,31 @@ def get_win(pagehash):
         res = cur.fetchone()
         return False if res==None else res[0]
 
+def check_win(team):
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute(
+            "SELECT pagehash FROM protected_pages"
+        )
+        pages = cur.fetchall()
+        for i in pages:
+            if team==1:
+                cur.execute(
+                    "SELECT team1visited FROM pages WHERE pagehash=%s LIMIT 1",
+                    (i[0],)
+                )
+            elif team==2:
+                cur.execute(
+                    "SELECT team2visited FROM pages WHERE pagehash=%s LIMIT 1",
+                    (i[0],)
+                )
+            else:
+                return False
+            res = cur.fetchone()
+            if not(res[0]):
+                return False
+    return True
+
 def make_game(length=None):
     length = 1000 if length==None else int(length)
     goallength = randint(int(length/10), int(length/2))
@@ -148,7 +173,10 @@ def game(pageid):
     pagetargets = get_page_targets(pageid)
     shuffle(pagetargets)
     win = get_win(pageid)
-    done = False
+    if win:
+        done = check_win()
+    else:
+        done = False
     return render_template("gamepage.html", name=pageid, targets=pagetargets, win=win, done=done)
 
 @bp.route("/jointeam/<team>")
