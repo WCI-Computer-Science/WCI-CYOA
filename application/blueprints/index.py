@@ -44,6 +44,8 @@ def visitedpage(pagehash, key):
         res = cur.fetchone()
         if res==None:
             return
+        if res[0]==None:
+            return
         team = int(res[0])
         if team in [1,2]:
             cur.execute(
@@ -141,6 +143,12 @@ def game(pageid):
     win = get_win(pageid)
     done = False
     return render_template("gamepage.html", name=pageid, targets=pagetargets, win=win, done=done)
+
+@bp.route("/jointeam/<team>")
+def jointeam(team):
+    if int(team) not in ["1", "2"]:
+        abort(401)
+    
 
 @bp.route("/gamesetup/makegame")
 def generate_game():
