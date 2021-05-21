@@ -19,10 +19,10 @@ def home():
     return render_template("index.html")
 
 @bp.route("/game/<pageid>")
-def param(pageid):
+def game(pageid):
     if pageid.lower=="start":
         pageid = get_start_page()
         if pageid == 0:
             abort(403)
         return redirect("/game/" + pageid)
-    return render_template("gamepage.html", param=param)
+    return render_template("gamepage.html", param=pageid)
