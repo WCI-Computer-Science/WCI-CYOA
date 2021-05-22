@@ -166,6 +166,11 @@ def game(pageid):
         if pageid == 0:
             abort(403)
         return redirect("/game/" + str(pageid))
+    elif pageid.lower()=="fakewin":
+        done = request.args.get("done", "false")
+        done = True if done == "true" else False
+        win = True
+        return render_template("gamepage.html", name="Fake win page", targets=[], win=win, done=done)
     if not(page_exists(pageid)):
         abort(404)
     if "key" in session:
@@ -204,7 +209,6 @@ def jointeam(team):
         )
     db.commit()
     return redirect("/users/")
-    
 
 @bp.route("/gamesetup/makegame")
 def generate_game():
