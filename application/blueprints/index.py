@@ -126,14 +126,15 @@ def make_game(length=None):
                 "INSERT INTO protected_pages (pagenumber, pagehash, final, gamepagenumber) VALUES (%s, %s, %s, %s)",
                 (i, hash(str(hash(str(gamepagenumber)))), i==goallength, gamepagenumber)
             )
+            protectedpagestargetnum = randint(1, 3)
             cur.execute(
                 "INSERT INTO pages (gamepagenumber, pagehash, target1, target2, target3) VALUES (%s, %s, %s, %s, %s)",
                 (
                     gamepagenumber,
                     hash(str(hash(str(gamepagenumber)))),
-                    hash(str(hash(str(protectedpages[i])))) if i!=goallength else None,
-                    hash(str(hash(str(choice(targetpages))))) if targets>1 and i!=goallength else None,
-                    hash(str(hash(str(choice(targetpages))))) if targets>2 and i!=goallength else None
+                    (hash(str(hash(str(protectedpages[i])))) if i!=goallength else None) if protectedpagestargetnum==1 else (hash(str(hash(str(choice(targetpages))))) if targets>1 and i!=goallength else None),
+                    (hash(str(hash(str(protectedpages[i])))) if i!=goallength else None) if protectedpagestargetnum==2 else (hash(str(hash(str(choice(targetpages))))) if targets>2 and i!=goallength else None),
+                    (hash(str(hash(str(protectedpages[i])))) if i!=goallength else None) if protectedpagestargetnum==3 else (hash(str(hash(str(choice(targetpages))))) if targets>3 and i!=goallength else None)
                 )
             )
         for i in pages:
@@ -175,7 +176,6 @@ def game(pageid):
     visitedpage(pageid, key)
 
     pagetargets = get_page_targets(pageid)
-    shuffle(pagetargets)
     win = get_win(pageid)
     if win:
         done = check_win(get_team(key))
