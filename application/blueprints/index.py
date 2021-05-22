@@ -161,6 +161,11 @@ def home():
 
 @bp.route("/game/<pageid>")
 def game(pageid):
+    if "key" in session:
+        key = session["key"]
+    elif request.args.get("key", None)!=None:
+        key = request.args.get("key")
+    else: abort(401)
     if pageid.lower()=="start":
         pageid = get_start_page()
         if pageid == 0:
@@ -173,11 +178,6 @@ def game(pageid):
         return render_template("gamepage.html", name="Fake win page", targets=[], win=win, done=done)
     if not(page_exists(pageid)):
         abort(404)
-    if "key" in session:
-        key = session["key"]
-    elif request.args.get("key", None)!=None:
-        key = request.args.get("key")
-    else: abort(401)
     visitedpage(pageid, key)
 
     pagetargets = get_page_targets(pageid)

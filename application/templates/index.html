@@ -6,4 +6,5 @@
 <h1>Choose you own adventure!</h1>
 <p style="color:grey">(Without any story)</p>
 {% if key != None %}<p>Enter the game: <a href="/game/start" class="startlink"><b>here</b></a>{% endif %}
+{% if key != None %}<p>See what the win page looks like: <a href="/game/fakewin">Before you've found a route from start to end</a> or <a href="/game/fakewin?done=true">After you've found a route from start to end</a></p>{% endif %}
 {% endblock %}
