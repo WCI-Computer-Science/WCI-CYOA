@@ -203,7 +203,7 @@ def jointeam(team):
             (str(team), key)
         )
     db.commit()
-    return "Welcome to team %s!" % team
+    return redirect("/users/")
     
 
 @bp.route("/gamesetup/makegame")
