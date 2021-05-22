@@ -152,7 +152,11 @@ def make_game(length=None):
 
 @bp.route("/")
 def home():
-    return render_template("index.html")
+    if "key" in session:
+        key = session["key"]
+    else:
+        key = request.args.get("key", None)
+    return render_template("index.html", key=key)
 
 @bp.route("/game/<pageid>")
 def game(pageid):

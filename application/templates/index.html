@@ -5,5 +5,5 @@
 {% block body %}
 <h1>Choose you own adventure!</h1>
 <p style="color:grey">(Without any story)</p>
-{% if "key" in session %}<p>Enter the game: <a href="/game/start">here</a>{% endif %}
+{% if key is not None %}<p>Enter the game: <a href="/game/start">here</a>{% endif %}
 {% endblock %}
