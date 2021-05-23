@@ -69,6 +69,45 @@ def confirmsignup():
     session["key"] = key
     return redirect("/users")
 
+@bp.route("/changepassword", methods=("POST",))
+def changepassword():
+    if "key" not in session:
+        abort(401)
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute("SELECT password_hash, password_salt FROM users WHERE key=%s LIMIT 1", (session["key"],))
+        res = cur.fetchone()
+        if res==None:
+            abort(401)
+    oldpasshash, salt = hash_pass(str(request.form["oldpassword"]), salt=res[1])
+    if oldpasshash!=res[0]:
+        flash("Incorrect password!")
+        return redirect("/users")
+    newpass1 = str(request.form["newpassword1"])
+    newpass2 = str(request.form["newpassword2"])
+    if newpass1!=newpass2:
+        flash("New passwords don't match!")
+        return redirect("/users")
+    newpasshash, salt = hash_pass(newpass1)
+    flash("Success!")
+    return redirect("/users")
+
+@bp.route("/regeneratekey")
+def changepassword():
+    if "key" not in session:
+        abort(401) 
+    db = get_db()
+    with db.cursor() as cur:
+        cur.execute("SELECT key FROM users WHERE key=%s LIMIT 1", (session["key"],))
+        res = cur.fetchone()
+        if res==None:
+            abort(401)
+        newkey = str(generate_key())
+        cur.execute(
+            "UPDATE users SET key=%s WHERE key=%s", (newkey, session["key"])
+        )
+    return redirect("/users")
+
 @bp.route("/login", methods=("GET",))
 def login():
     if "key" in session:
