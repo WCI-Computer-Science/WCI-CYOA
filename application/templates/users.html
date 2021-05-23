@@ -7,10 +7,23 @@
 <h2>Welcome back, {{username}}</h2>
 <h4>You key is: <code>{{key}}</code></h4>
 <p>Your key is used to identify you when you're making requests from outside of the browser. Add a parameter "key" to your request to use it.<br />("<code>?key={{key}}</code>")</p>
+<a href="/users/regeneratekey">Generate a new key</a>
+{% for i in get_flashed_messages()%}
+<p>{{i}}</p>
+{% endfor %}
+<form action="/users/changepassword" method="POST">
+    <label>Old password:</label>
+    <input type="password" id="oldpassword" name="oldpassword"><br />
+    <label>New password:</label>
+    <input type="password" id="newpassword1" name="newpassword1"><br />
+    <label>Re-enter new password:</label>
+    <input type="password" id="newpassword2" name="newpassword2"><br />
+</form>
+
 {% if team==4 %}
 <a href="/jointeam/1">Join team 1</a>
 <a href="/jointeam/2">Join team 2</a>
 {% else %}
-<h4>You are on team {{team}}</h4>
+<h4>You are on team {{team}}.</h4>
 {% endif %}
 {% endblock %}
