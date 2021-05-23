@@ -89,6 +89,12 @@ def changepassword():
         flash("New passwords don't match!")
         return redirect("/users")
     newpasshash, salt = hash_pass(newpass1)
+    with db.cursor() as cur:
+        cur.execute(
+            "UPDATE users SET password_hash=%s, password_salt=%s WHERE key=%s",
+            (newpasshash, salt, session["key"])
+        )
+    db.commit()
     flash("Success!")
     return redirect("/users")
 
@@ -106,6 +112,7 @@ def regeneratekey():
         cur.execute(
             "UPDATE users SET key=%s WHERE key=%s", (newkey, session["key"])
         )
+    db.commit()
     return redirect("/users")
 
 @bp.route("/login", methods=("GET",))
