@@ -93,7 +93,7 @@ def changepassword():
     return redirect("/users")
 
 @bp.route("/regeneratekey")
-def changepassword():
+def regeneratekey():
     if "key" not in session:
         abort(401) 
     db = get_db()
