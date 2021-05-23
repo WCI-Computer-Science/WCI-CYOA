@@ -8,7 +8,7 @@
 <h4>You key is: <code>{{key}}</code></h4>
 <p>Your key is used to identify you when you're making requests from outside of the browser. Add a parameter "key" to your request to use it.<br />("<code>?key={{key}}</code>")</p>
 <form method="get" action="/users/regeneratekey">
-    <button type="submit">Re-generate key</button>
+    <button type="submit">Generate a new key</button>
 </form>
 {% for i in get_flashed_messages()%}
 <p>{{i}}</p>
