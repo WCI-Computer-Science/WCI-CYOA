@@ -113,6 +113,7 @@ def regeneratekey():
             "UPDATE users SET key=%s WHERE key=%s", (newkey, session["key"])
         )
     db.commit()
+    session["key"] = newkey
     return redirect("/users")
 
 @bp.route("/login", methods=("GET",))
