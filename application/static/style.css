@@ -21,12 +21,12 @@ nav li {
 
 .navright {
   float: right;
-  text-align: left;
+  text-align: center;
 }
 
 .navleft {
   float: left;
-  text-align: right;
+  text-align: center;
 }
 
 
