@@ -29,7 +29,12 @@ nav li {
   text-align: right;
 }
 
+
 nav a {
+  display: block;
+  padding: 10px 0;
+  height: 100%;
+  border-radius: 7px;
   text-decoration: none;
   color: white;
 }
