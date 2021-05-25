@@ -32,11 +32,12 @@ nav li {
 
 nav a {
   display: block;
-  padding: 10px 0;
+  padding: 10px 5px;
   height: 100%;
   border-radius: 7px;
   text-decoration: none;
   color: white;
+  text-align: center
 }
 
 nav a:hover {
@@ -50,8 +51,7 @@ nav a:hover {
 button, input[type="submit"] {
     font-size: 1em;
     margin: 25px 0 0 0;
-    width: 7em;
-    height: 2em;
+    padding: 10px;
     border: 1px solid black;
     border-radius: 7px;
     background-color: white;
@@ -60,4 +60,5 @@ button, input[type="submit"] {
 button:hover, input[type="submit"]:hover {
   background-color: rgb(50, 50, 50);
   color: white;
+  cursor: pointer;
 }
