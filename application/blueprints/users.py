@@ -59,6 +59,12 @@ def confirmsignup():
             flash("Account already exists")
             return redirect("/users/signup")
         key = str(generate_key())
+        if len(request.form["users"])<3:
+            flash("Your username must be at least 3 characters long!")
+            return redirect("/users/signup")
+        if len(request.form["password"])<4:
+            flash("Your password must be at least 4 characters long!")
+            return redirect("/users/signup")
         password, salt = hash_pass(str(request.form["password"]))
         cur.execute(
             "INSERT INTO users (username, password_hash, password_salt, key) VALUES (%s, %s, %s, %s)",
