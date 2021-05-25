@@ -35,9 +35,9 @@ nav a {
 }
 
 nav a:hover {
-  color: #e03424;
+  background-color: rgb(146, 143, 148);
+  color: white;
 }
-
 
 #content {
   padding: 0 20px;
