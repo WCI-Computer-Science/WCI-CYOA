@@ -47,3 +47,17 @@ nav a:hover {
 #content {
   padding: 0 20px;
 }
+button, input[type="submit"] {
+    font-size: 1em;
+    margin: 25px 0 0 0;
+    width: 7em;
+    height: 2em;
+    border: 1px solid black;
+    border-radius: 7px;
+    background-color: white;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: rgb(50, 50, 50);
+  color: white;
+}
