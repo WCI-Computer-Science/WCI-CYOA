@@ -59,7 +59,7 @@ def confirmsignup():
             flash("Account already exists")
             return redirect("/users/signup")
         key = str(generate_key())
-        if len(request.form["users"])<3:
+        if len(request.form["username"])<3:
             flash("Your username must be at least 3 characters long!")
             return redirect("/users/signup")
         if len(request.form["password"])<4:
